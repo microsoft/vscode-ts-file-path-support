@@ -50,7 +50,7 @@
 	"scripts": {
 		"build": "yarn build-src && yarn build-package",
 		"build-src": "rollup -c rollup.config.mjs",
-		"build-package": "vsce package --yarn --out extension.vsix",
+		"build-package": "vsce package --out extension.vsix",
 		"dev": "rollup -c rollup.config.mjs --watch"
 	},
 	"dependencies": {
@@ -65,5 +65,10 @@
 		"@rollup/plugin-typescript": "11.1.6",
 		"rollup-plugin-copy": "3.5.0",
 		"rollup-plugin-delete": "2.0.0"
+	},
+	"vsce": {
+		"baseImagesUrl": "https://github.com/microsoft/vscode-ts-file-path-support/raw/main/vscode-extension",
+		"baseContentUrl": "https://github.com/microsoft/vscode-ts-file-path-support/raw/main/vscode-extension",
+		"yarn": true
 	}
 }
