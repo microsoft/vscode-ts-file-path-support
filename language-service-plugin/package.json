@@ -1,0 +1,22 @@
+{
+	"name": "ts-plugin-file-path-support",
+	"private": true,
+	"version": "0.0.1",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"license": "MIT",
+	"scripts": {
+		"dev": "rollup -c rollup.config.mjs --watch",
+		"build": "rollup -c rollup.config.mjs",
+		"test": "vitest"
+	},
+	"dependencies": {},
+	"devDependencies": {
+		"typescript": "^5.5.2",
+		"vitest": "^1.6.0",
+		"@types/node": "^20.14.9",
+		"rollup": "4.18.0",
+		"@rollup/plugin-typescript": "11.1.6",
+		"rollup-plugin-delete": "2.0.0"
+	}
+}

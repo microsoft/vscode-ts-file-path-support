@@ -1,0 +1,69 @@
+{
+	"name": "ts-file-path-support",
+	"private": true,
+	"displayName": "TS/JS Relative File Path Support",
+	"description": "Provides support for relative file paths in TypeScript and JavaScript. This includes auto-complete, go to definition, rename and inlining/extraction.",
+	"version": "0.9.0",
+	"icon": "docs/logo.drawio.png",
+	"keywords": [
+		"typescript",
+		"javascript",
+		"relative",
+		"file",
+		"path"
+	],
+	"license": "MIT",
+	"engines": {
+		"vscode": "^1.90.0"
+	},
+	"files": [
+		"dist/**/*",
+		"package.json",
+		"node_modules/ts-plugin-file-path-support",
+		"README.md",
+		"LICENSE",
+		"docs/logo.drawio.png"
+	],
+	"publisher": "ms-vscode",
+	"readme": "./README.md",
+	"repository": {
+		"url": "https://github.com/microsoft/vscode-ts-file-path-support.git"
+	},
+	"categories": [
+		"Programming Languages"
+	],
+	"activationEvents": [
+		"onLanguage:typescript",
+		"onLanguage:typescriptreact",
+		"onLanguage:javascript",
+		"onLanguage:javascriptreact"
+	],
+	"main": "dist/index",
+	"contributes": {
+		"typescriptServerPlugins": [
+			{
+				"name": "ts-plugin-file-path-support",
+				"enableForWorkspaceTypeScriptVersions": true
+			}
+		]
+	},
+	"scripts": {
+		"build": "yarn build-src && yarn build-package",
+		"build-src": "rollup -c rollup.config.mjs",
+		"build-package": "vsce package --yarn --out extension.vsix",
+		"dev": "rollup -c rollup.config.mjs --watch"
+	},
+	"dependencies": {
+		"ts-plugin-file-path-support": "*"
+	},
+	"devDependencies": {
+		"@vscode/vsce": "^2.29.0",
+		"@types/node": "^20.14.9",
+		"@types/vscode": "^1.90.0",
+		"typescript": "^5.5.2",
+		"rollup": "4.18.0",
+		"@rollup/plugin-typescript": "11.1.6",
+		"rollup-plugin-copy": "3.5.0",
+		"rollup-plugin-delete": "2.0.0"
+	}
+}
