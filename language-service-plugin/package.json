@@ -8,7 +8,7 @@
 	"scripts": {
 		"dev": "rollup -c rollup.config.mjs --watch",
 		"build": "rollup -c rollup.config.mjs",
-		"test": "vitest"
+		"test": "vitest run"
 	},
 	"dependencies": {},
 	"devDependencies": {

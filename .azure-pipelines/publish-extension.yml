@@ -32,6 +32,9 @@ extends:
       - script: yarn run build
         displayName: Build
 
+      - name: Test
+        run: yarn run test
+
     tsa:
       config:
         areaPath: 'Visual Studio Code Miscellaneous Extensions'

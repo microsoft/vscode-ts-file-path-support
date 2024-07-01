@@ -4,7 +4,6 @@ import type { RelativeFilePathService } from "ts-plugin-file-path-support/src/ap
 import { CompletionItem, CompletionItemKind, ExtensionContext, languages, Range, LocationLink, WorkspaceEdit, Uri, CodeAction, CodeActionKind, DocumentSelector } from "vscode";
 import { createTsLspCustomServiceClient } from "./createTsLspCustomServiceClient";
 
-
 export class Extension {
 	constructor() {
 		const client = createTsLspCustomServiceClient<RelativeFilePathService>();
@@ -21,7 +20,7 @@ export class Extension {
 				const result = await client.findRelativeFileNodeAt({ uri: document.uri, position: position });
 				if (!result) { return undefined; }
 
-				const curDir = result.fullDirPathBeforeCursor;
+				const curDir = join(result.baseDir, result.relativePathBeforeCursor);
 
 				const filesInDir = await fs.readdir(curDir);
 				const items = await Promise.all(filesInDir.map(async f => ({
@@ -56,7 +55,7 @@ export class Extension {
 				if (!result) { return undefined; }
 				const range = new Range(document.positionAt(result.stringValueRange[0]), document.positionAt(result.stringValueRange[1]));
 				return [{
-					targetUri: Uri.file(result.fullPath),
+					targetUri: Uri.file(join(result.baseDir, result.relativePath)),
 					targetRange: new Range(0, 0, 0, 0),
 					originSelectionRange: range,
 				}];
@@ -96,7 +95,8 @@ export class Extension {
 
 				const filePathObjInfo = await client.findFilePathObjAt({ uri: document.uri, position: range.start });
 				if (filePathObjInfo) {
-					const fileContent = await fs.readFile(filePathObjInfo.fullPath, { encoding: 'utf8' });
+					const fullPath = join(filePathObjInfo.baseDir, filePathObjInfo.relativePath);
+					const fileContent = await fs.readFile(fullPath, { encoding: 'utf8' });
 					const range = new Range(document.positionAt(filePathObjInfo.replaceRange[0]), document.positionAt(filePathObjInfo.replaceRange[1]));
 					const line = document.lineAt(range.start.line);
 					const indentation = line.text.substring(0, line.firstNonWhitespaceCharacterIndex);
@@ -104,7 +104,7 @@ export class Extension {
 
 					const editInlineAndDelete = new WorkspaceEdit();
 					editInlineAndDelete.replace(document.uri, range, newText);
-					editInlineAndDelete.deleteFile(Uri.file(filePathObjInfo.fullPath));
+					editInlineAndDelete.deleteFile(Uri.file(fullPath));
 					result.push({
 						title: "Inline And Delete File",
 						isPreferred: true,
@@ -114,7 +114,7 @@ export class Extension {
 
 					const editInline = new WorkspaceEdit();
 					editInline.replace(document.uri, range, newText);
-					editInline.deleteFile(Uri.file(filePathObjInfo.fullPath));
+					editInline.deleteFile(Uri.file(fullPath));
 					result.push({
 						title: "Inline File",
 						kind: CodeActionKind.RefactorInline,

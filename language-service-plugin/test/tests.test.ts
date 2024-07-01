@@ -1,4 +1,3 @@
-//import ts = require("typescript/lib/tsserverlibrary");
 import { describe, expect, test } from 'vitest';
 import { withLanguageService } from "./utils";
 import { ParsedJsString } from "../src/impl/ParsedJsString";
@@ -7,7 +6,6 @@ import { OffsetEdit, SingleOffsetEdit } from "../src/utils/edit";
 import { OffsetRange } from "../src/utils/offsetRange";
 import { createServiceImpl } from "../src/impl/createServiceImpl";
 
-
 describe("Service", () => {
 	test('Basic', () => withLanguageService(
 		`
@@ -15,7 +13,7 @@ describe("Service", () => {
 			function fixturesFilePath(path: RelativeFilePath<'$dir/target'>) { }
 
 			const data1 = {
-				filePath: fixturesFi|lePath('foo.txt'),
+				fileP|ath: fixturesFilePath('foo.txt'),
 			};
 
 			const data2 = {
@@ -27,7 +25,7 @@ describe("Service", () => {
 			const impl = createServiceImpl(ts, languageService);
 			expect(impl.findFilePathObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`
 				{
-				  "fullPath": "target\\foo.txt",
+				  "baseDir": "root/target",
 				  "isMultiLine": true,
 				  "relativePath": "foo.txt",
 				  "replaceRange": [
@@ -41,7 +39,7 @@ describe("Service", () => {
 				  "fileContent": "bar",
 				  "fileName": "foo.txt",
 				  "isMultiLine": true,
-				  "relativeFilePathBaseDir": "./target",
+				  "relativeFilePathBaseDir": "root/target",
 				  "relativeFilePathFnName": "fixturesFilePath",
 				  "replaceRange": [
 				    251,
@@ -58,7 +56,7 @@ describe("Service", () => {
 			function fixturesFilePath(path: RelativeFilePathX<'$dir/target'>) { }
 
 			const data1 = {
-				filePath: fixturesFi|lePath('foo.txt'),
+				filePath: fixturesFilePath('f|oo.txt'),
 			};
 		`,
 		(ts, languageService, sf, m) => {
@@ -79,14 +77,14 @@ describe("Service", () => {
 			function resolveFilePath(...args: any[]) { }
 
 			export const data1 = {
-				filePath: resolveF|ilePath("sampleDir/test1.txt")
+				filePath: resolveFilePath("samp|leDir/test1.txt")
 			};
 		`,
 		(ts, languageService, sf, m) => {
 			const impl = createServiceImpl(ts, languageService);
 			expect(impl.findFilePathObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`
 				{
-				  "fullPath": "target\\sampleDir\\test1.txt",
+				  "baseDir": "root/target",
 				  "isMultiLine": true,
 				  "relativePath": "sampleDir/test1.txt",
 				  "replaceRange": [
@@ -107,14 +105,14 @@ describe("Service", () => {
 			function fromFixture(...args: any[]) { }
 
 			export const data1 = {
-				filePath: fromF|ixture("sampleDir/test1.txt")
+				filePath: fromFixture("samp|leDir/test1.txt")
 			};
 		`,
 		(ts, languageService, sf, m) => {
 			const impl = createServiceImpl(ts, languageService);
 			expect(impl.findFilePathObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`
 				{
-				  "fullPath": "target\\sampleDir\\test1.txt",
+				  "baseDir": "root/target",
 				  "isMultiLine": true,
 				  "relativePath": "sampleDir/test1.txt",
 				  "replaceRange": [
@@ -128,14 +126,14 @@ describe("Service", () => {
 
 	test('Multi File 1', () => withLanguageService(
 		{
-			"/main.ts": `
+			"/root/main.ts": `
 				import { fromFixture } from "./lib";
 
 				export const data1 = {
-					file|Path: fromFixture("sampleDir/test1.txt")
+					filePath: fromFixture("samp|leDir/test1.txt")
 				};
 			`,
-			"/lib.ts": `
+			"/root/lib.ts": `
 				type RelativeFilePath<T extends string> = string & { baseDir?: T };
 				export function fromFixture(path: RelativeFilePath<'$dir/target'>) { return path; }
 			`
@@ -147,7 +145,7 @@ describe("Service", () => {
 
 			expect(impl.findFilePathObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`
 				{
-				  "fullPath": "\\\\target\\sampleDir\\test1.txt",
+				  "baseDir": "/root/target",
 				  "isMultiLine": true,
 				  "relativePath": "sampleDir/test1.txt",
 				  "replaceRange": [
@@ -165,7 +163,7 @@ describe("Service", () => {
 				import { fromFixture } from "./lib";
 
 				export const data1 = {
-					fileNa|me: 'hello world',
+					fileN|ame: 'hello world',
 					fileContent: 'foo bar',
 				};
 			`,
@@ -179,7 +177,19 @@ describe("Service", () => {
 			const impl = createServiceImpl(ts, languageService);
 			expect(languageService.getProgram()!.getSemanticDiagnostics()).toMatchInlineSnapshot(`[]`);
 
-			expect(impl.findFileNameFileContentObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`undefined`);
+			expect(impl.findFileNameFileContentObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`
+				{
+				  "fileContent": "foo bar",
+				  "fileName": "hello world",
+				  "isMultiLine": true,
+				  "relativeFilePathBaseDir": "//target",
+				  "relativeFilePathFnName": "fromFixture",
+				  "replaceRange": [
+				    75,
+				    127,
+				  ],
+				}
+			`);
 		}
 	));
 });

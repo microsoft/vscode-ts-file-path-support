@@ -1,6 +1,6 @@
 import type * as ts from "typescript";
 import { OffsetRange } from "../utils/offsetRange";
-import { dirname, join } from "path";
+import { dirname } from "path";
 import { ParsedPath } from "./ParsedPath";
 import { ParsedJsString } from "./ParsedJsString";
 
@@ -174,12 +174,12 @@ export class AstMatchers {
 
 
 export class FilePathCallExpression {
-    public readonly resolvedBasePath = this.baseDir.replace('$dir', dirname(this.basePathSourceFileNode.fileName));
+    public readonly baseDir = this.baseDirUnresolved.replace('$dir', dirname(this.basePathSourceFileNode.fileName));
 
     public readonly relativePathParsed = ParsedJsString.parse(this.relativePathNode.getSourceFile().text.substring(this.relativePathNode.getStart(), this.relativePathNode.getEnd()));
     public readonly relativePathSegments = ParsedPath.parse(this.relativePathParsed.value);
 
-    public readonly fullPath = join(this.resolvedBasePath, this.relativePathSegments.text);
+    public readonly relativePath = this.relativePathSegments.text;
 
     public readonly relativePathValueRange =
         OffsetRange.ofLength(this.relativePathParsed.value.length)
@@ -189,21 +189,21 @@ export class FilePathCallExpression {
     constructor(
         public readonly callExpressionNode: ts.CallExpression,
         public readonly relativePathNode: ts.StringLiteral,
-        public readonly baseDir: string,
+        public readonly baseDirUnresolved: string,
         public readonly basePathSourceFileNode: ts.SourceFile,
     ) { }
 
     getCursorInfo(position: number) {
         const curPathSegment = this.relativePathSegments.getLiteralSegmentTouchingPos(this.relativePathParsed.posInSourceToValue(position - this.relativePathNode.getStart()))!;
         const curPathSegmentIdx = this.relativePathSegments.segments.indexOf(curPathSegment);
-        const fullPathBeforeCursorSegment = join(this.resolvedBasePath, this.relativePathSegments.getSubPath(curPathSegmentIdx));
+        const relativePathBeforeCursorSegment = this.relativePathSegments.getSubPath(curPathSegmentIdx);
 
         return {
             cursorSegmentRange: new OffsetRange(
                 this.relativePathParsed.posInValueToSource(curPathSegment.range.start),
                 this.relativePathParsed.posInValueToSource(curPathSegment.range.endExclusive)
             ).delta(this.relativePathNode.getStart()),
-            fullPathBeforeCursorSegment,
+            relativePathBeforeCursorSegment,
         };
     }
 }

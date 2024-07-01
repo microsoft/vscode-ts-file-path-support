@@ -10,8 +10,7 @@ export type RelativeFilePathService = CreateServicesDescription<{
             cursorSegmentRange: [start: number, endEx: number];
             relativePath: string;
             baseDir: string;
-            fullPath: string;
-            fullDirPathBeforeCursor: string;
+            relativePathBeforeCursor: string;
         } | undefined;
     };
 
@@ -22,7 +21,7 @@ export type RelativeFilePathService = CreateServicesDescription<{
         response: {
             isMultiLine: boolean;
             replaceRange: [start: number, endEx: number];
-            fullPath: string;
+            baseDir: string;
             relativePath: string;
         } | undefined;
     }

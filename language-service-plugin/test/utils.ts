@@ -5,7 +5,7 @@ export function withLanguageService(
     testFn: (tsApi: typeof ts, languageService: ts.LanguageService, sf: ts.SourceFile, markers: number[]) => void,
 ): void {
     if (typeof content === "string") {
-        content = { "/main.ts": content };
+        content = { "root/main.ts": content };
     }
 
     const files = new Map<string, string>(

@@ -13,12 +13,15 @@ export function createServiceImpl(typescript: typeof ts, languageService: ts.Lan
             if (!nodeAtCursor) { return undefined; }
             const result = utils.findNodeOrAncestor(nodeAtCursor, n => utils.parseFilePathCallExpression(program, n));
             if (!result) { return undefined; }
+
+            // Only trigger when cursor is on the string literal
+            if (result.relativePathNode !== nodeAtCursor) { return undefined; }
+
             const cursorInfo = result.getCursorInfo(position);
             return {
-                baseDir: result.resolvedBasePath,
-                relativePath: result.relativePathParsed.value,
-                fullPath: result.fullPath,
-                fullDirPathBeforeCursor: cursorInfo.fullPathBeforeCursorSegment,
+                baseDir: result.baseDir,
+                relativePath: result.relativePath,
+                relativePathBeforeCursor: cursorInfo.relativePathBeforeCursorSegment,
                 stringValueRange: [result.relativePathValueRange.start, result.relativePathValueRange.endExclusive],
                 cursorSegmentRange: [cursorInfo.cursorSegmentRange.start, cursorInfo.cursorSegmentRange.endExclusive],
             };
@@ -47,7 +50,6 @@ export function createServiceImpl(typescript: typeof ts, languageService: ts.Lan
         },
 
         findFilePathObjAt({ fileName, position }) {
-
             const program = languageService.getProgram();
             if (!program) { return undefined; }
             const utils = new AstMatchers(typescript);
@@ -58,7 +60,7 @@ export function createServiceImpl(typescript: typeof ts, languageService: ts.Lan
 
             return {
                 isMultiLine: true,
-                fullPath: result.filePathInfo.fullPath,
+                baseDir: result.filePathInfo.baseDir,
                 relativePath: result.filePathInfo.relativePathParsed.value,
                 replaceRange: [result.replaceRange.start, result.replaceRange.endExclusive],
             };
