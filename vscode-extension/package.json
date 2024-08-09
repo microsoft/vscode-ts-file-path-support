@@ -19,9 +19,8 @@
 	"files": [
 		"dist/**/*",
 		"package.json",
-		"node_modules/ts-plugin-file-path-support",
+		"node_modules/ts-plugin-file-path-support/**/*",
 		"README.md",
-		"LICENSE",
 		"docs/logo.drawio.png"
 	],
 	"publisher": "ms-vscode",
