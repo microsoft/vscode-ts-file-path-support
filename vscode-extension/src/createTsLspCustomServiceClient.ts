@@ -1,4 +1,4 @@
-import { Uri, Position, commands, Range } from "vscode";
+import { Uri, Position, commands, Range, CodeAction } from "vscode";
 import type { ServiceDescription, ServiceToAsyncObj, IRequestMessage, IResponseMessage } from "ts-plugin-file-path-support/src/rpc/service";
 
 const magicKind = 'refactor.customService::';
@@ -17,10 +17,25 @@ export function createTsLspCustomServiceClient<TService extends ServiceDescripti
                     new Range(args.position, args.position),
                     magicKind + JSON.stringify(request)
                 );
-                const resultStr = (result as any)[0].title;
+
+                if (!isCodeActionArray(result)) {
+                    console.error('unexpected result', result);
+                    throw new Error("Result is not a code action array");
+                }
+                if (result.length === 0) {
+                    throw new Error("Did not receive data, probably the typescript extension did not start yet.");
+                }
+                const resultStr = result[0].title;
+                if (resultStr === undefined) {
+                    throw new Error("Title is undefined");
+                }
                 const response = JSON.parse(resultStr) as IResponseMessage;
                 return response.result;
             };
         }
     }) as any;
+}
+
+function isCodeActionArray(result: unknown): result is CodeAction[] {
+    return Array.isArray(result) && result.every((item) => 'title' in item);
 }
