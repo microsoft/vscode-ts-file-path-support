@@ -32,8 +32,8 @@ extends:
       - script: yarn run build
         displayName: Build
 
-      - name: Test
-        run: yarn run test
+      - script: yarn run test
+        displayName: Test
 
     tsa:
       config:
