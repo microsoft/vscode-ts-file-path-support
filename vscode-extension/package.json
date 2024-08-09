@@ -3,7 +3,7 @@
 	"private": true,
 	"displayName": "TS/JS Relative File Path Support",
 	"description": "Provides support for relative file paths in TypeScript and JavaScript. This includes auto-complete, go to definition, rename and inlining/extraction.",
-	"version": "0.9.0",
+	"version": "0.9.1",
 	"icon": "docs/logo.drawio.png",
 	"keywords": [
 		"typescript",
