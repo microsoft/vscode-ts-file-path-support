@@ -60,7 +60,7 @@
 		"@types/node": "^20.14.9",
 		"@types/vscode": "^1.90.0",
 		"typescript": "^5.5.2",
-		"rollup": "4.18.0",
+		"rollup": "4.22.4",
 		"@rollup/plugin-typescript": "11.1.6",
 		"rollup-plugin-copy": "3.5.0",
 		"rollup-plugin-delete": "2.0.0"
