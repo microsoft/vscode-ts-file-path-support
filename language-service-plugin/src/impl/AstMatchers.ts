@@ -40,7 +40,7 @@ export class AstMatchers {
     public parseFileNameFileContentObj(program: ts.Program, node: ts.Node): { node: ts.ObjectLiteralExpression, fileName: string, fileContents: string, replaceRange: OffsetRange } | undefined {
         // { fileName: 'foobar/test2.txt', fileContents: 'foobar' };
 
-        const getStringOrStringArray = (node: ts.Node): string | undefined => {
+        const parseStringOrStringArray = (node: ts.Node): string | undefined => {
             if (this._ts.isStringLiteral(node)) {
                 return node.text;
             }
@@ -61,7 +61,7 @@ export class AstMatchers {
 
         const match = this.matchesObj(node, {
             fileName: (n) => this._ts.isStringLiteral(n) ? n : undefined,
-            fileContents: (n) => getStringOrStringArray(n) ? n : undefined,
+            fileContents: parseStringOrStringArray
         });
 
         if (!match) { return undefined; }
@@ -69,7 +69,7 @@ export class AstMatchers {
         return {
             node: match.node,
             fileName: match.result.fileName.result.text,
-            fileContents: getStringOrStringArray(match.result.fileContents.result)!,
+            fileContents: match.result.fileContents.result,
             replaceRange: createOffsetRange(match.result.fileName.property).join(createOffsetRange(match.result.fileContents.property)),
         };
     }
