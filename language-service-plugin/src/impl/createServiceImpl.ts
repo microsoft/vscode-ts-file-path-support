@@ -41,7 +41,7 @@ export function createServiceImpl(typescript: typeof ts, languageService: ts.Lan
 
             return {
                 isMultiLine: true,
-                fileContent: result.fileContent,
+                fileContents: result.fileContents,
                 fileName: result.fileName,
                 relativeFilePathBaseDir: fns[0].resolvedBasePath,
                 relativeFilePathFnName: fns[0].fnName,
