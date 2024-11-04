@@ -96,11 +96,11 @@ export class Extension {
 				const filePathObjInfo = await client.findFilePathObjAt({ uri: document.uri, position: range.start });
 				if (filePathObjInfo) {
 					const fullPath = join(filePathObjInfo.baseDir, filePathObjInfo.relativePath);
-					const fileContent = await fs.readFile(fullPath, { encoding: 'utf8' });
+					const fileContents = await fs.readFile(fullPath, { encoding: 'utf8' });
 					const range = new Range(document.positionAt(filePathObjInfo.replaceRange[0]), document.positionAt(filePathObjInfo.replaceRange[1]));
 					const line = document.lineAt(range.start.line);
 					const indentation = line.text.substring(0, line.firstNonWhitespaceCharacterIndex);
-					const newText = `fileName: ${JSON.stringify(filePathObjInfo.relativePath)},\n${indentation}fileContent: ${JSON.stringify(fileContent)}`;
+					const newText = `fileName: ${JSON.stringify(filePathObjInfo.relativePath)},\n${indentation}fileContents: ${JSON.stringify(fileContents)}`;
 
 					const editInlineAndDelete = new WorkspaceEdit();
 					editInlineAndDelete.replace(document.uri, range, newText);
@@ -131,7 +131,7 @@ export class Extension {
 					editExtract.replace(document.uri, range, newText);
 					const newUri = Uri.file(join(fileNameFileContentObjInfo.relativeFilePathBaseDir, fileNameFileContentObjInfo.fileName));
 					editExtract.createFile(newUri, { ignoreIfExists: false, overwrite: false });
-					editExtract.replace(newUri, new Range(0, 0, 0, 0), fileNameFileContentObjInfo.fileContent);
+					editExtract.replace(newUri, new Range(0, 0, 0, 0), fileNameFileContentObjInfo.fileContents);
 					result.push({
 						title: "Extract File",
 						kind: CodeActionKind.RefactorExtract,

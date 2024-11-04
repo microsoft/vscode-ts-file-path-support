@@ -33,7 +33,7 @@ export type RelativeFilePathService = CreateServicesDescription<{
         response: {
             isMultiLine: boolean;
             replaceRange: [start: number, endEx: number];
-            fileContent: string;
+            fileContents: string;
             fileName: string;
 
             relativeFilePathFnName: string;

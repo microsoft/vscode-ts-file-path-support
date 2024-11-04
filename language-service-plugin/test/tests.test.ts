@@ -18,7 +18,12 @@ describe("Service", () => {
 
 			const data2 = {
 				fileName: "foo.txt",
-				fileC|ontent: "bar",
+				fileC|ontents: "bar",
+			};
+
+			const data3 = {
+				fileName: "foo.txt",
+				fileC|ontents: [ "line1\\n", "line2\\n", "line3" ],
 			};
 		`,
 		(ts, languageService, sf, m) => {
@@ -36,14 +41,29 @@ describe("Service", () => {
 			`);
 			expect(impl.findFileNameFileContentObjAt({ fileName: sf.fileName, position: m[1] })).toMatchInlineSnapshot(`
 				{
-				  "fileContent": "bar",
+				  "fileContents": "bar",
 				  "fileName": "foo.txt",
 				  "isMultiLine": true,
 				  "relativeFilePathBaseDir": "root/target",
 				  "relativeFilePathFnName": "fixturesFilePath",
 				  "replaceRange": [
 				    251,
-				    294,
+				    295,
+				  ],
+				}
+			`);
+			expect(impl.findFileNameFileContentObjAt({ fileName: sf.fileName, position: m[2] })).toMatchInlineSnapshot(`
+				{
+				  "fileContents": "line1
+				line2
+				line3",
+				  "fileName": "foo.txt",
+				  "isMultiLine": true,
+				  "relativeFilePathBaseDir": "root/target",
+				  "relativeFilePathFnName": "fixturesFilePath",
+				  "replaceRange": [
+				    327,
+				    399,
 				  ],
 				}
 			`);
@@ -164,7 +184,7 @@ describe("Service", () => {
 
 				export const data1 = {
 					fileN|ame: 'hello world',
-					fileContent: 'foo bar',
+					fileContents: 'foo bar',
 				};
 			`,
 			"/lib.ts": `
@@ -179,14 +199,14 @@ describe("Service", () => {
 
 			expect(impl.findFileNameFileContentObjAt({ fileName: sf.fileName, position: m[0] })).toMatchInlineSnapshot(`
 				{
-				  "fileContent": "foo bar",
+				  "fileContents": "foo bar",
 				  "fileName": "hello world",
 				  "isMultiLine": true,
 				  "relativeFilePathBaseDir": "//target",
 				  "relativeFilePathFnName": "fromFixture",
 				  "replaceRange": [
 				    75,
-				    127,
+				    128,
 				  ],
 				}
 			`);

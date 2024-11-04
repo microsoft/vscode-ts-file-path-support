@@ -61,7 +61,7 @@ Renames the referenced file and updates the file path.
 
 ### Inlining
 
-Inlining deletes the referenced file on disk and inlines its content as `fileContent` property.
+Inlining deletes the referenced file on disk and inlines its content as `fileContents` property.
 Only works on objects that have the shape `{ filePath: myPathFn("myRelativePathStr"), ...additionalProperties }`.
 
 ![inlining-demo](docs/demo-inlining.gif)
@@ -69,7 +69,7 @@ Only works on objects that have the shape `{ filePath: myPathFn("myRelativePathS
 ### Extraction
 
 Extraction is the opposit of inlining: This action creates a file on disk with the specified content and references this file by a file path function in scope (which means it has to be in the same file or imported).
-Only works on objects that have the shape `{ fileName: "myRelativeFileName", fileContent: "myFileContent", ...additionalProperties }`.
+Only works on objects that have the shape `{ fileName: "myRelativeFileName", fileContents: "myFileContent", ...additionalProperties }`.
 
 ![extraction-demo](docs/demo-extraction.gif)
 

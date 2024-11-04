@@ -37,12 +37,31 @@ export class AstMatchers {
         };
     }
 
-    public parseFileNameFileContentObj(program: ts.Program, node: ts.Node): { node: ts.ObjectLiteralExpression, fileName: string, fileContent: string, replaceRange: OffsetRange } | undefined {
-        // { fileName: 'foobar/test2.txt', fileContent: 'foobar' };
+    public parseFileNameFileContentObj(program: ts.Program, node: ts.Node): { node: ts.ObjectLiteralExpression, fileName: string, fileContents: string, replaceRange: OffsetRange } | undefined {
+        // { fileName: 'foobar/test2.txt', fileContents: 'foobar' };
+
+        const parseStringOrStringArray = (node: ts.Node): string | undefined => {
+            if (this._ts.isStringLiteral(node)) {
+                return node.text;
+            }
+            if (this._ts.isArrayLiteralExpression(node)) {
+                const result: string[] = [];
+                for (const entry of node.elements) {
+                    if (this._ts.isStringLiteral(entry)) {
+                        result.push(entry.text);
+                    } else {
+                        return undefined;
+                    }
+                }
+                return result.join('');
+            }
+            return undefined;
+        }
+
 
         const match = this.matchesObj(node, {
             fileName: (n) => this._ts.isStringLiteral(n) ? n : undefined,
-            fileContent: (n) => this._ts.isStringLiteral(n) ? n : undefined,
+            fileContents: parseStringOrStringArray
         });
 
         if (!match) { return undefined; }
@@ -50,8 +69,8 @@ export class AstMatchers {
         return {
             node: match.node,
             fileName: match.result.fileName.result.text,
-            fileContent: match.result.fileContent.result.text,
-            replaceRange: createOffsetRange(match.result.fileName.property).join(createOffsetRange(match.result.fileContent.property)),
+            fileContents: match.result.fileContents.result,
+            replaceRange: createOffsetRange(match.result.fileName.property).join(createOffsetRange(match.result.fileContents.property)),
         };
     }
 
