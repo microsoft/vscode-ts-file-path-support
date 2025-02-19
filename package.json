@@ -9,7 +9,7 @@
 		"vitest": "^1.6.0"
 	},
 	"scripts": {
-		"build": "yarn workspace ts-plugin-file-path-support build && yarn workspace ts-file-path-support build",
-		"test": "yarn workspace ts-plugin-file-path-support test"
+		"build": "yarn workspace @vscode/ts-plugin-file-path-support build && yarn workspace ts-file-path-support build",
+		"test": "yarn workspace @vscode/ts-plugin-file-path-support test"
 	}
 }

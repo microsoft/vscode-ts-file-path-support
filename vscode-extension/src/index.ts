@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import { join } from "path";
-import type { RelativeFilePathService } from "ts-plugin-file-path-support/src/api";
+import type { RelativeFilePathService } from "@vscode/ts-plugin-file-path-support/src/api";
 import { CompletionItem, CompletionItemKind, ExtensionContext, languages, Range, LocationLink, WorkspaceEdit, Uri, CodeAction, CodeActionKind, DocumentSelector } from "vscode";
 import { createTsLspCustomServiceClient } from "./createTsLspCustomServiceClient";
 

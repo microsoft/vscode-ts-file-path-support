@@ -1,5 +1,5 @@
 {
-	"name": "ts-plugin-file-path-support",
+	"name": "@vscode/ts-plugin-file-path-support",
 	"private": true,
 	"version": "0.0.1",
 	"main": "dist/index.js",
