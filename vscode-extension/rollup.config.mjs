@@ -17,7 +17,7 @@ export default defineConfig({
 			targets: [
 				{
 					src: ["../language-service-plugin/dist/**/*.js", "../language-service-plugin/package.json"],
-					dest: "./node_modules/ts-plugin-file-path-support",
+					dest: "./node_modules/@vscode/ts-plugin-file-path-support",
 				},
 			],
 		}),

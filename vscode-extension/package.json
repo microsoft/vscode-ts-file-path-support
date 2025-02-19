@@ -19,7 +19,7 @@
 	"files": [
 		"dist/**/*",
 		"package.json",
-		"node_modules/ts-plugin-file-path-support/**/*",
+		"node_modules/@vscode/ts-plugin-file-path-support/**/*",
 		"docs/logo.drawio.png",
 		"LICENSE"
 	],
@@ -41,7 +41,7 @@
 	"contributes": {
 		"typescriptServerPlugins": [
 			{
-				"name": "ts-plugin-file-path-support",
+				"name": "@vscode/ts-plugin-file-path-support",
 				"enableForWorkspaceTypeScriptVersions": true
 			}
 		]
@@ -53,17 +53,17 @@
 		"dev": "rollup -c rollup.config.mjs --watch"
 	},
 	"dependencies": {
-		"ts-plugin-file-path-support": "*"
+		"@vscode/ts-plugin-file-path-support": "*"
 	},
 	"devDependencies": {
-		"@vscode/vsce": "^3.2.1",
+		"@rollup/plugin-typescript": "11.1.6",
 		"@types/node": "^20.14.9",
 		"@types/vscode": "^1.90.0",
-		"typescript": "^5.5.2",
+		"@vscode/vsce": "^3.2.2",
 		"rollup": "4.22.4",
-		"@rollup/plugin-typescript": "11.1.6",
 		"rollup-plugin-copy": "3.5.0",
-		"rollup-plugin-delete": "2.0.0"
+		"rollup-plugin-delete": "2.0.0",
+		"typescript": "^5.5.2"
 	},
 	"vsce": {
 		"baseImagesUrl": "https://github.com/microsoft/vscode-ts-file-path-support/raw/main/vscode-extension",
