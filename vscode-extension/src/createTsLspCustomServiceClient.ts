@@ -1,5 +1,5 @@
 import { Uri, Position, commands, Range, CodeAction } from "vscode";
-import type { ServiceDescription, ServiceToAsyncObj, IRequestMessage, IResponseMessage } from "ts-plugin-file-path-support/src/rpc/service";
+import type { ServiceDescription, ServiceToAsyncObj, IRequestMessage, IResponseMessage } from "@vscode/ts-plugin-file-path-support/src/rpc/service";
 
 const magicKind = 'refactor.customService::';
 
