@@ -1,5 +1,5 @@
 import type * as ts from "typescript";
-import { createCustomService } from "../rpc/decorateLanguageServiceWithCustomService";
+import { createCustomService } from "../rpc/registerCustomService";
 import { RelativeFilePathService } from "../api";
 import { AstMatchers } from "./AstMatchers";
 
