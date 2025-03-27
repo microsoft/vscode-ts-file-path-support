@@ -1,12 +1,13 @@
 import { promises as fs } from "fs";
 import { join } from "path";
-import type { RelativeFilePathService } from "@vscode/ts-plugin-file-path-support/src/api";
+import type { RelativeFilePathService, RelativeFilePathServiceId } from "@vscode/ts-plugin-file-path-support/src/api";
 import { CompletionItem, CompletionItemKind, ExtensionContext, languages, Range, LocationLink, WorkspaceEdit, Uri, CodeAction, CodeActionKind, DocumentSelector } from "vscode";
 import { createTsLspCustomServiceClient } from "./createTsLspCustomServiceClient";
 
 export class Extension {
 	constructor() {
-		const client = createTsLspCustomServiceClient<RelativeFilePathService>();
+		const id: RelativeFilePathServiceId = "tsRelativeFilePath";
+		const client = createTsLspCustomServiceClient<RelativeFilePathService>(id);
 
 		const selector: DocumentSelector = [
 			{ language: "typescript", },

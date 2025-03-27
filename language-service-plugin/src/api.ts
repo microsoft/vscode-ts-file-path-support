@@ -1,5 +1,7 @@
 import { CreateServicesDescription } from "./rpc/service";
 
+export type RelativeFilePathServiceId = "tsRelativeFilePath";
+
 export type RelativeFilePathService = CreateServicesDescription<{
     findRelativeFileNodeAt: {
         request: {
