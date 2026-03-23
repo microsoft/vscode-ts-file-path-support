@@ -23,16 +23,15 @@ extends:
   parameters:
     publishExtension: ${{ parameters.publishExtension }}
     workingDirectory: $(Build.SourcesDirectory)/vscode-extension
-    vscePackageArgs: --yarn
 
     buildSteps:
-      - script: yarn install --frozen-lockfile
+      - script: npm ci
         displayName: Install dependencies
 
-      - script: yarn run build
+      - script: npm run build
         displayName: Build
 
-      - script: yarn run test
+      - script: npm run test
         displayName: Test
 
     tsa:
