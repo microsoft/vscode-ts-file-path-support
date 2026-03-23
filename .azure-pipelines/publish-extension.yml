@@ -23,7 +23,6 @@ extends:
   parameters:
     publishExtension: ${{ parameters.publishExtension }}
     workingDirectory: $(Build.SourcesDirectory)/vscode-extension
-    vscePackageArgs: --no-yarn
 
     buildSteps:
       - script: npm ci
