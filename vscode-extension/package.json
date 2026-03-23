@@ -16,13 +16,6 @@
 	"engines": {
 		"vscode": "^1.90.0"
 	},
-	"files": [
-		"dist/**/*",
-		"package.json",
-		"node_modules/@vscode/ts-plugin-file-path-support/**/*",
-		"docs/logo.drawio.png",
-		"LICENSE"
-	],
 	"publisher": "ms-vscode",
 	"readme": "./README.md",
 	"repository": {
@@ -51,9 +44,6 @@
 		"build-src": "rollup -c rollup.config.mjs",
 		"build-package": "vsce package --out extension.vsix",
 		"dev": "rollup -c rollup.config.mjs --watch"
-	},
-	"dependencies": {
-		"@vscode/ts-plugin-file-path-support": "*"
 	},
 	"devDependencies": {
 		"@rollup/plugin-typescript": "11.1.6",
