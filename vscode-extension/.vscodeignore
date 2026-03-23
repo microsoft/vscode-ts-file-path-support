@@ -1,0 +1,19 @@
+# Exclude source and build configuration (not needed at runtime)
+src/**
+tsconfig.json
+rollup.config.mjs
+
+# Exclude VSIX output artifacts
+*.vsix
+
+# Exclude workspace parent directory files
+# (prevents vsce from including workspace root via npm workspace symlinks)
+../**
+
+# Exclude node_modules (development dependencies)
+node_modules/**
+
+# Re-include the TypeScript server plugin in node_modules
+!node_modules/@vscode/
+!node_modules/@vscode/ts-plugin-file-path-support/
+!node_modules/@vscode/ts-plugin-file-path-support/**

@@ -16,7 +16,11 @@ export default defineConfig({
 		copy({
 			targets: [
 				{
-					src: ["../language-service-plugin/dist/**/*.js", "../language-service-plugin/package.json"],
+					src: "../language-service-plugin/dist/*.js",
+					dest: "./node_modules/@vscode/ts-plugin-file-path-support/dist",
+				},
+				{
+					src: "../language-service-plugin/package.json",
 					dest: "./node_modules/@vscode/ts-plugin-file-path-support",
 				},
 			],
