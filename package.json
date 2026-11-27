@@ -2,7 +2,6 @@
 	"private": true,
 	"workspaces": [
 		"language-service-plugin",
-		"ts-api-extras",
 		"vscode-extension"
 	],
 	"devDependencies": {
